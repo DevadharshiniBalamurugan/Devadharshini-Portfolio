@@ -1,35 +1,23 @@
 // ===============================
-// Welcome Message
+// Sticky Navbar
 // ===============================
 
-window.onload = function () {
-    console.log("Welcome to Devadharshini's Portfolio");
-};
+const header = document.querySelector("header");
 
+window.addEventListener("scroll", () => {
 
-// ===============================
-// Smooth Scrolling
-// ===============================
-
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-
-    anchor.addEventListener("click", function (e) {
-
-        e.preventDefault();
-
-        document.querySelector(this.getAttribute("href")).scrollIntoView({
-
-            behavior: "smooth"
-
-        });
-
-    });
+    if (window.scrollY > 50) {
+        header.style.background = "#050812";
+        header.style.boxShadow = "0 4px 15px rgba(0,0,0,0.4)";
+    } else {
+        header.style.background = "#070b19";
+        header.style.boxShadow = "none";
+    }
 
 });
 
-
 // ===============================
-// Active Navigation Link
+// Active Navbar Link
 // ===============================
 
 const sections = document.querySelectorAll("section");
@@ -39,9 +27,9 @@ window.addEventListener("scroll", () => {
 
     let current = "";
 
-    sections.forEach((section) => {
+    sections.forEach(section => {
 
-        const sectionTop = section.offsetTop - 120;
+        const sectionTop = section.offsetTop - 150;
         const sectionHeight = section.clientHeight;
 
         if (pageYOffset >= sectionTop) {
@@ -50,7 +38,7 @@ window.addEventListener("scroll", () => {
 
     });
 
-    navLinks.forEach((link) => {
+    navLinks.forEach(link => {
 
         link.classList.remove("active");
 
@@ -62,93 +50,96 @@ window.addEventListener("scroll", () => {
 
 });
 
+// ===============================
+// Smooth Scroll
+// ===============================
+
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+
+    anchor.addEventListener("click", function(e) {
+
+        e.preventDefault();
+
+        document.querySelector(this.getAttribute("href"))
+            .scrollIntoView({
+                behavior: "smooth"
+            });
+
+    });
+
+});
 
 // ===============================
-// Scroll Animation
+// Back To Top Button
 // ===============================
 
-const cards = document.querySelectorAll(".skill-card, .project-card");
+const topBtn = document.querySelector(".top-btn");
 
-const observer = new IntersectionObserver((entries) => {
+window.addEventListener("scroll", () => {
 
-    entries.forEach((entry) => {
+    if (window.scrollY > 300) {
 
-        if (entry.isIntersecting) {
+        topBtn.style.display = "flex";
 
-            entry.target.style.opacity = "1";
-            entry.target.style.transform = "translateY(0)";
+    } else {
+
+        topBtn.style.display = "none";
+
+    }
+
+});
+
+// ===============================
+// Reveal Animation
+// ===============================
+
+const revealElements = document.querySelectorAll(
+    ".about, .skills, .projects, .contact, .project-card, .skill-card"
+);
+
+function reveal() {
+
+    revealElements.forEach(element => {
+
+        const windowHeight = window.innerHeight;
+
+        const revealTop = element.getBoundingClientRect().top;
+
+        if (revealTop < windowHeight - 120) {
+
+            element.style.opacity = "1";
+            element.style.transform = "translateY(0px)";
 
         }
 
     });
 
-}, {
-    threshold: 0.2
-});
+}
 
-cards.forEach((card) => {
+revealElements.forEach(element => {
 
-    card.style.opacity = "0";
-    card.style.transform = "translateY(40px)";
-    card.style.transition = "0.7s";
-
-    observer.observe(card);
+    element.style.opacity = "0";
+    element.style.transform = "translateY(50px)";
+    element.style.transition = "1s";
 
 });
 
+window.addEventListener("scroll", reveal);
+
+reveal();
 
 // ===============================
-// Contact Form Validation
+// Contact Form
 // ===============================
 
 const form = document.querySelector("form");
 
-form.addEventListener("submit", function (e) {
+form.addEventListener("submit", function(e){
 
     e.preventDefault();
 
-    const name = form.querySelector('input[type="text"]').value.trim();
-    const email = form.querySelector('input[type="email"]').value.trim();
-    const message = form.querySelector("textarea").value.trim();
+    alert("Thank you! Your message has been sent.");
 
-    if (name === "" || email === "" || message === "") {
-
-        alert("Please fill all the fields.");
-
-    } else {
-
-        alert("Thank you! Your message has been sent.");
-
-        form.reset();
-
-    }
+    form.reset();
 
 });
-
-
-// ===============================
-// Typing Animation
-// ===============================
-
-const text = "Python Full Stack Developer";
-let index = 0;
-
-const heading = document.querySelector(".home-content h3");
-
-heading.innerHTML = "";
-
-function typeEffect() {
-
-    if (index < text.length) {
-
-        heading.innerHTML += text.charAt(index);
-
-        index++;
-
-        setTimeout(typeEffect, 100);
-
-    }
-
-}
-
-typeEffect();
